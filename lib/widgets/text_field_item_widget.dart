@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kitsu/widgets/alert_dialog_heper.dart';
 
 class TextFieldWidget extends StatelessWidget {
   final TextEditingController controller;
@@ -12,25 +13,55 @@ class TextFieldWidget extends StatelessWidget {
       required this.controller,
       required this.hintText,
       required this.icon,
-      required this.isObsText,
-      required this.inputType});
+      this.isObsText = false,
+      this.inputType = TextInputType.text});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: TextFormField(
+        style: const TextStyle(
+          fontSize: 15,
+          color: Color.fromRGBO(2, 217, 173, 1),
+        ),
+        cursorColor: const Color.fromRGBO(2, 217, 173, 1),
         controller: controller,
         obscureText: isObsText,
         keyboardType: inputType,
         validator: (value) {
           if (value == null || value.isEmpty) {
-            
-          };
-        }
-        if (hintText == 'Актуальный email' && !validateEmail(value)) {
-
-        }
+            return 'Введите $hintText';
+          }
+          if (hintText == 'Актуальный email' && !validateEmail(value)) {
+            return 'Введите коректный email';
+          }
+          return null;
+        },
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          enabledBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            ),
+            borderSide:
+                BorderSide(color: Color.fromRGBO(2, 217, 173, 1), width: 2),
+          ),
+          focusedBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderSide:
+                BorderSide(color: Color.fromRGBO(2, 217, 173, 1), width: 2),
+          ),
+          hintStyle: const TextStyle(color: Colors.transparent),
+          prefixIcon: icon,
+          hintText: hintText,
+          labelText: hintText,
+          labelStyle: const TextStyle(
+              fontSize: 15,
+              color: Color.fromRGBO(2, 217, 173, 1),
+              fontWeight: FontWeight.w300),
+          filled: true,
+        ),
       ),
     );
   }

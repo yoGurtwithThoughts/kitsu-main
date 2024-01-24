@@ -1,6 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kitsu/widgets/button_widget.dart';
-import 'package:kitsu/widgets/text_field_widget.dart';
+import 'package:kitsu/widgets/text_field_item_widget.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:kitsu/pages/models/db_helder.dart';
+import 'package:kitsu/pages/models/user_model.dart';
 
 class RegisterPage extends StatefulWidget {
   static const routeName = '/reg-page';
@@ -14,6 +18,33 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPage extends State<RegisterPage> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nicknameController = TextEditingController();
+  var dbSqliteHelper = DbHelper();
+
+  _singUp() async {
+    String nickname = _nicknameController.text;
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      UserModel userModel = UserModel(
+          user_id: '1', user_name: nickname, email: email, password: password);
+      await dbSqliteHelper.saveData(userModel: userModel);
+      Fluttertoast.showToast(
+          msg: "Пользователь зарегистрирован",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 15);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,10 +93,35 @@ class _RegisterPage extends State<RegisterPage> {
                 ),
               )),
               Container(
-                  width: 350,
-                  height: 350,
-                  child: Image.asset('assets/logo.png')),
-              const TextFieldWidget(),
+                width: 200,
+                height: 200,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/logo.png'), fit: BoxFit.fill),
+                ),
+              ),
+              const SizedBox(height: 100),
+              TextFieldWidget(
+                controller: _emailController,
+                hintText: 'Введите имя',
+                icon: const Icon(Icons.email,
+                    color: Color.fromRGBO(2, 217, 173, 1)),
+              ),
+              const SizedBox(height: 20),
+              TextFieldWidget(
+                controller: _nicknameController,
+                hintText: 'Введите Email',
+                icon: const Icon(Icons.email,
+                    color: Color.fromRGBO(2, 217, 173, 1)),
+              ),
+              const SizedBox(height: 20),
+              TextFieldWidget(
+                controller: _passwordController,
+                hintText: 'Введите пароль',
+                icon: const Icon(Icons.lock,
+                    color: Color.fromRGBO(2, 217, 173, 1)),
+              ),
+              const SizedBox(height: 20),
               ButtonWidget(
                 buttonName: 'СТАТЬ ЛИСОМ',
                 buttonColor: const Color.fromRGBO(2, 217, 173, 1),

@@ -14,20 +14,22 @@ class AuthPage extends StatelessWidget {
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 50),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               const SizedBox(
                 height: 170,
               ),
               Container(
-                  width: 350,
-                  height: 350,
-                  child: Image.asset('assets/logo.png')),
-              const SizedBox(
-                height: 40,
-              ),
+                  width: 200,
+                  height: 200,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(image: AssetImage('assets/logo.png'),
+                    fit: BoxFit.fill)
+                  ),
+                  ),
+              const SizedBox(height: 190),
               const Text(
-                '     ОБМЕНИВАЙТЕСЬ НАВЫКАМИ',
+                'ОБМЕНИВАЙТЕСЬ НАВЫКАМИ',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
